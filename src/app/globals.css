@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+:root {
+  --sidebar: #12337a;
+  --brand-blue: #1d4ed8;
+  --brand-blue-dark: #1e3a8a;
+  --brand-blue-soft: #dbeafe;
+  --bg-page: #f1f5f9;
+  --background: #f1f5f9;
+  --foreground: #0f172a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg-page);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* Larger tap targets on touch devices */
+@media (pointer: coarse) {
+  button,
+  a,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+}
+
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Prevent iOS zoom flicker on focused inputs that stay at 16px+ */
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+@media (min-width: 640px) {
+  input,
+  select,
+  textarea {
+    font-size: inherit;
+  }
+}
