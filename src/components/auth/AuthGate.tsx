@@ -46,7 +46,9 @@ export function AuthGate({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
 
-  const resolvingProfile = Boolean(session && profileLoading);
+  const resolvingProfile = Boolean(
+    session && profileLoading && !selectedCompany,
+  );
   const needsProfile =
     Boolean(session) && !selectedCompany && !profileLoading;
 

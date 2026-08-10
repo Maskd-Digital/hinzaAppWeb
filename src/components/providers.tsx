@@ -44,42 +44,53 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [online, setOnline] = useState(true);
   const [configError, setConfigError] = useState<string | null>(null);
   const profileRequestId = useRef(0);
+  const hasCompanyRef = useRef(false);
 
   const applyProfile = useCallback((profile: UserProfile | null) => {
     setUserProfile(profile);
     if (profile?.company) {
+      hasCompanyRef.current = true;
       setSelectedCompany(profile.company);
     } else if (profile?.company_id) {
+      hasCompanyRef.current = true;
       setSelectedCompany({
         id: profile.company_id,
         name: "Company",
       });
     } else {
+      hasCompanyRef.current = false;
       setSelectedCompany(null);
     }
   }, []);
 
-  const loadProfile = useCallback(async () => {
-    const requestId = ++profileRequestId.current;
-    setProfileLoading(true);
-    try {
-      const profile = await api.verifyUser();
-      if (requestId !== profileRequestId.current) return null;
-      applyProfile(profile);
-      return profile;
-    } catch {
-      if (requestId !== profileRequestId.current) return null;
-      applyProfile(null);
-      return null;
-    } finally {
-      if (requestId === profileRequestId.current) {
-        setProfileLoading(false);
+  const loadProfile = useCallback(
+    async (opts?: { force?: boolean }) => {
+      const requestId = ++profileRequestId.current;
+      // Keep the app visible if we already have a company (e.g. tab focus / token refresh).
+      const showLoading = opts?.force || !hasCompanyRef.current;
+      if (showLoading) setProfileLoading(true);
+
+      try {
+        const profile = await api.verifyUser();
+        if (requestId !== profileRequestId.current) return null;
+        applyProfile(profile);
+        return profile;
+      } catch {
+        if (requestId !== profileRequestId.current) return null;
+        // Don't wipe an existing in-memory profile on a transient tab-focus failure.
+        if (!hasCompanyRef.current) applyProfile(null);
+        return null;
+      } finally {
+        if (requestId === profileRequestId.current && showLoading) {
+          setProfileLoading(false);
+        }
       }
-    }
-  }, [applyProfile]);
+    },
+    [applyProfile],
+  );
 
   const refreshProfile = useCallback(async () => {
-    return loadProfile();
+    return loadProfile({ force: true });
   }, [loadProfile]);
 
   useEffect(() => {
@@ -114,7 +125,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSession(data.session);
 
         if (data.session) {
-          await loadProfile();
+          await loadProfile({ force: true });
         }
 
         const { data: sub } = supabase.auth.onAuthStateChange(
@@ -122,14 +133,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setSession(nextSession);
             if (!nextSession) {
               profileRequestId.current += 1;
+              hasCompanyRef.current = false;
               applyProfile(null);
               setProfileLoading(false);
               return;
             }
 
-            // SIGNED_IN / TOKEN_REFRESHED: resolve profile if we don't have one yet.
-            // Avoid racing login()'s own verify call by sharing loadProfile.
-            if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
+            // Tab focus often refreshes the JWT (TOKEN_REFRESHED) — do not re-fetch profile.
+            // Only resolve profile when we actually need one.
+            if (
+              (event === "SIGNED_IN" || event === "INITIAL_SESSION") &&
+              !hasCompanyRef.current
+            ) {
               await loadProfile();
             }
           },
@@ -157,6 +172,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = useCallback(
     async (email: string, password: string) => {
       const supabase = getSupabase();
+      hasCompanyRef.current = false;
       setProfileLoading(true);
       const { error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
@@ -169,13 +185,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const { data } = await supabase.auth.getSession();
       setSession(data.session);
-      await loadProfile();
+      await loadProfile({ force: true });
     },
     [loadProfile],
   );
 
   const logout = useCallback(async () => {
     profileRequestId.current += 1;
+    hasCompanyRef.current = false;
     applyProfile(null);
     setLastSubmittedComplaint(null);
     setProfileLoading(false);
