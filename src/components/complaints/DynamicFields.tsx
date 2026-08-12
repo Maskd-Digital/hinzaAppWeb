@@ -95,13 +95,13 @@ export function DynamicFields({ fields, values, onChange }: Props) {
           return (
             <label
               key={field.field_name}
-              className="flex items-center gap-2 text-sm text-slate-700"
+              className="flex items-center gap-2 text-sm text-gray-700"
             >
               <input
                 type="checkbox"
                 checked={Boolean(value)}
                 onChange={(e) => onChange(field.field_name, e.target.checked)}
-                className="h-4 w-4 rounded border-slate-300 text-[var(--brand-blue)]"
+                className="h-4 w-4 rounded border-gray-300 text-[#0108B8]"
               />
               {label}
             </label>
@@ -130,7 +130,7 @@ export function DynamicFields({ fields, values, onChange }: Props) {
                   {files.map((file, idx) => (
                     <div
                       key={`${file.name}-${idx}`}
-                      className="overflow-hidden rounded-lg border border-slate-200"
+                      className="overflow-hidden rounded-lg border border-gray-200"
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img

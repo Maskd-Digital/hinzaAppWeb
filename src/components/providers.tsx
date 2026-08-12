@@ -25,7 +25,11 @@ interface AuthState {
   lastSubmittedComplaint: LastSubmittedComplaint | null;
   online: boolean;
   configError: string | null;
-  login: (email: string, password: string) => Promise<void>;
+  login: (
+    email: string,
+    password: string,
+    hooks?: { onAuthenticated?: () => void },
+  ) => Promise<void>;
   logout: () => Promise<void>;
   refreshProfile: () => Promise<UserProfile | null>;
   setLastSubmittedComplaint: (value: LastSubmittedComplaint | null) => void;
@@ -170,7 +174,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [applyProfile, loadProfile]);
 
   const login = useCallback(
-    async (email: string, password: string) => {
+    async (
+      email: string,
+      password: string,
+      hooks?: { onAuthenticated?: () => void },
+    ) => {
       const supabase = getSupabase();
       hasCompanyRef.current = false;
       setProfileLoading(true);
@@ -185,6 +193,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const { data } = await supabase.auth.getSession();
       setSession(data.session);
+      // Fire toast immediately after auth succeeds (before profile finishes)
+      hooks?.onAuthenticated?.();
       await loadProfile({ force: true });
     },
     [loadProfile],

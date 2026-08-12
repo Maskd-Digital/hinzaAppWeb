@@ -51,9 +51,9 @@ export default function ProfileRequiredPage() {
 
   if (selectedCompany || profileLoading || attempt < 3) {
     return (
-      <div className="flex min-h-dvh flex-col items-center justify-center bg-[var(--bg-page)] px-6">
+      <div className="flex min-h-dvh flex-col items-center justify-center bg-[#EFF4FF] px-6">
         <Spinner label="Loading your profile…" />
-        <p className="mt-2 max-w-sm text-center text-xs text-slate-500">
+        <p className="mt-2 max-w-sm text-center text-xs text-gray-500">
           This can take a moment after sign-in.
         </p>
       </div>
@@ -61,19 +61,19 @@ export default function ProfileRequiredPage() {
   }
 
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-[var(--bg-page)] p-6">
+    <div className="flex min-h-dvh items-center justify-center bg-[#EFF4FF] p-6">
       <Card className="w-full max-w-lg">
-        <h1 className="text-2xl font-bold text-[var(--brand-blue)]">
+        <h1 className="text-2xl font-bold text-[#081636]">
           Profile required
         </h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-gray-600">
           We could not resolve your company profile
           {userProfile?.email ? ` for ${userProfile.email}` : ""}. Retry, or
           sign out and try another account.
         </p>
 
         {error && (
-          <p className="mt-4 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
+          <p className="mt-4 rounded-md bg-red-50 p-4 text-sm text-red-800">
             {error}
           </p>
         )}

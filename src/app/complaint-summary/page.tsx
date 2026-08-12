@@ -21,10 +21,10 @@ function Section({
 }) {
   return (
     <Card>
-      <h2 className="mb-3 text-base font-semibold text-slate-800 sm:text-lg">
+      <h2 className="mb-3 text-lg font-semibold text-[#081636]">
         {title}
       </h2>
-      <div className="space-y-3 text-sm text-slate-700">{children}</div>
+      <div className="space-y-3 text-sm text-gray-700">{children}</div>
     </Card>
   );
 }
@@ -39,8 +39,8 @@ function Row({
   if (value === null || value === undefined || value === "") return null;
   return (
     <div className="grid grid-cols-1 gap-0.5 sm:grid-cols-[11rem_minmax(0,1fr)] sm:gap-3">
-      <span className="font-medium capitalize text-slate-500">{label}</span>
-      <div className="min-w-0 break-words text-slate-800">{value}</div>
+      <span className="font-medium capitalize text-gray-500">{label}</span>
+      <div className="min-w-0 break-words text-[#081636]">{value}</div>
     </div>
   );
 }
@@ -79,7 +79,7 @@ function formatFieldValue(value: unknown): React.ReactNode {
           href={url}
           target="_blank"
           rel="noreferrer"
-          className="font-medium text-[var(--brand-blue)] underline"
+          className="font-medium text-[#2563EB] underline hover:opacity-80"
         >
           View photo
         </a>
@@ -176,7 +176,7 @@ export default function ComplaintSummaryPage() {
 
         <Section title="Key Details">
           {detailEntries.length === 0 ? (
-            <p className="text-sm text-slate-500">No additional details</p>
+            <p className="text-sm text-gray-500">No additional details</p>
           ) : (
             detailEntries.map(([key, value]) => (
               <Row
@@ -194,7 +194,7 @@ export default function ComplaintSummaryPage() {
                   href={data.complaint.capa_document_url}
                   target="_blank"
                   rel="noreferrer"
-                  className="font-medium text-[var(--brand-blue)] underline"
+                  className="font-medium text-[#2563EB] underline hover:opacity-80"
                 >
                   View document / image
                 </a>

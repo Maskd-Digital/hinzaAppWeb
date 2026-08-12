@@ -16,7 +16,6 @@ interface Props {
   placeholder?: string;
   disabled?: boolean;
   className?: string;
-  /** Accessible label for the control */
   "aria-label"?: string;
 }
 
@@ -77,19 +76,15 @@ export function AppSelect({
         aria-label={ariaLabel}
         onClick={() => setOpen(true)}
         className={cn(
-          "flex min-h-11 w-full items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-left text-base text-slate-900 outline-none ring-[var(--brand-blue)] transition focus:ring-2 disabled:opacity-50 sm:text-sm",
+          "flex min-h-11 w-full items-center justify-between gap-2 rounded-md border border-gray-300 bg-white px-3 py-2 text-left text-base text-[#081636] outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:opacity-50 sm:text-sm",
           className,
         )}
+        style={{ boxShadow: "inset 0 2px 4px rgba(37, 99, 235, 0.25)" }}
       >
-        <span
-          className={cn(
-            "truncate",
-            !selected && "text-slate-400",
-          )}
-        >
+        <span className={cn("truncate", !selected && "text-gray-400")}>
           {selected?.label ?? placeholder}
         </span>
-        <ChevronDown className="h-4 w-4 shrink-0 text-slate-400" />
+        <ChevronDown className="h-4 w-4 shrink-0 text-gray-400" />
       </button>
 
       {open && (
@@ -97,37 +92,40 @@ export function AppSelect({
           <button
             type="button"
             aria-label="Close"
-            className="absolute inset-0 bg-black/40"
+            className="absolute inset-0 bg-gray-500/30 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
           <div
-            className="relative flex max-h-[85dvh] w-full max-w-lg flex-col rounded-t-2xl bg-white shadow-xl sm:max-h-[70vh] sm:rounded-2xl"
+            className="relative mx-0 flex max-h-[85dvh] w-full max-w-lg flex-col rounded-t-lg bg-white shadow-xl sm:mx-4 sm:max-h-[70vh] sm:rounded-lg"
             role="dialog"
             aria-modal="true"
           >
-            <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-              <p className="text-sm font-semibold text-slate-800">
+            <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
+              <p className="text-sm font-semibold text-[#081636]">
                 {ariaLabel ?? "Select an option"}
               </p>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-xl text-slate-500 hover:bg-slate-100"
+                className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-md text-gray-500 hover:bg-gray-100"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {options.length > 8 && (
-              <div className="border-b border-slate-100 px-4 py-3">
+              <div className="border-b border-gray-200 px-4 py-3">
                 <div className="relative">
-                  <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                  <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                   <input
                     autoFocus
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Search…"
-                    className="min-h-11 w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-base outline-none ring-[var(--brand-blue)] focus:ring-2 sm:text-sm"
+                    className="min-h-11 w-full rounded-md border border-gray-300 bg-white py-2 pl-9 pr-3 text-base text-[#081636] outline-none focus:border-[#0108B8] focus:ring-1 focus:ring-blue-500 sm:text-sm"
+                    style={{
+                      boxShadow: "inset 0 2px 4px rgba(1, 8, 184, 0.35)",
+                    }}
                   />
                 </div>
               </div>
@@ -145,10 +143,10 @@ export function AppSelect({
                   aria-selected={!value}
                   onClick={() => choose("")}
                   className={cn(
-                    "flex w-full items-center justify-between rounded-xl px-3 py-3 text-left text-sm",
+                    "flex w-full items-center justify-between rounded-md px-3 py-3 text-left text-sm",
                     !value
-                      ? "bg-[var(--brand-blue-soft)] font-semibold text-[var(--brand-blue)]"
-                      : "text-slate-600 hover:bg-slate-50",
+                      ? "bg-[#EFF4FF] font-semibold text-[#0108B8]"
+                      : "text-gray-600 hover:bg-gray-50",
                   )}
                 >
                   {placeholder}
@@ -164,10 +162,10 @@ export function AppSelect({
                       aria-selected={active}
                       onClick={() => choose(opt.value)}
                       className={cn(
-                        "flex w-full items-center justify-between gap-3 rounded-xl px-3 py-3 text-left text-sm",
+                        "flex w-full items-center justify-between gap-3 rounded-md px-3 py-3 text-left text-sm",
                         active
-                          ? "bg-[var(--brand-blue-soft)] font-semibold text-[var(--brand-blue)]"
-                          : "text-slate-800 hover:bg-slate-50",
+                          ? "bg-[#EFF4FF] font-semibold text-[#0108B8]"
+                          : "text-[#081636] hover:bg-gray-50",
                       )}
                     >
                       <span className="min-w-0 break-words">{opt.label}</span>
@@ -177,7 +175,7 @@ export function AppSelect({
                 );
               })}
               {filtered.length === 0 && (
-                <li className="px-3 py-6 text-center text-sm text-slate-500">
+                <li className="px-3 py-6 text-center text-sm text-gray-500">
                   No matches
                 </li>
               )}

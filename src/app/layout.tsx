@@ -1,13 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import { AuthProvider } from "@/components/providers";
 import { AuthGate } from "@/components/auth/AuthGate";
 import { ToastProvider } from "@/components/ui/toast";
+import { ComplaintsCacheProvider } from "@/components/complaints/ComplaintsCache";
+import { ComplaintsCacheReset } from "@/components/complaints/ComplaintsCacheReset";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta-sans",
   subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
 });
 
 const geistMono = Geist_Mono({
@@ -33,7 +36,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   viewportFit: "cover",
-  themeColor: "#12337a",
+  themeColor: "#0108B8",
 };
 
 export default function RootLayout({
@@ -44,13 +47,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${plusJakarta.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-dvh">
+      <body className="min-h-dvh font-sans">
         <AuthProvider>
-          <ToastProvider>
-            <AuthGate>{children}</AuthGate>
-          </ToastProvider>
+          <ComplaintsCacheProvider>
+            <ComplaintsCacheReset />
+            <ToastProvider>
+              <AuthGate>{children}</AuthGate>
+            </ToastProvider>
+          </ComplaintsCacheProvider>
         </AuthProvider>
       </body>
     </html>

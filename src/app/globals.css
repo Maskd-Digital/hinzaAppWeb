@@ -1,19 +1,28 @@
 @import "tailwindcss";
 
 :root {
-  --sidebar: #12337a;
-  --brand-blue: #1d4ed8;
-  --brand-blue-dark: #1e3a8a;
-  --brand-blue-soft: #dbeafe;
-  --bg-page: #f1f5f9;
-  --background: #f1f5f9;
-  --foreground: #0f172a;
+  /* Hinza design system — DESIGN.md */
+  --sidebar: #0108b8;
+  --brand-blue: #0108b8;
+  --brand-blue-dark: #010690;
+  --brand-accent: #2563eb;
+  --brand-blue-soft: #eff4ff;
+  --bg-page: #eff4ff;
+  --text: #081636;
+  --background: #ffffff;
+  --foreground: #081636;
+  --shadow-card: 0 4px 6px rgba(37, 99, 235, 0.25);
+  --shadow-card-strong: 0 4px 14px 0 rgba(37, 99, 235, 0.25),
+    0 2px 6px -2px rgba(37, 99, 235, 0.25);
+  --shadow-login: 0 4px 6px rgba(37, 99, 235, 0.35);
+  --shadow-input: inset 0 2px 4px rgba(37, 99, 235, 0.25);
+  --shadow-nav-active: inset 0 2px 4px rgba(1, 8, 184, 0.35);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-plus-jakarta-sans);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -25,7 +34,7 @@ html {
 body {
   background: var(--bg-page);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-plus-jakarta-sans), ui-sans-serif, system-ui, sans-serif;
   overflow-x: hidden;
   overscroll-behavior-y: none;
 }
@@ -42,7 +51,6 @@ textarea {
   font: inherit;
 }
 
-/* Larger tap targets on touch devices */
 @media (pointer: coarse) {
   button,
   a,
@@ -59,7 +67,6 @@ textarea {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* Prevent iOS zoom flicker on focused inputs that stay at 16px+ */
 input,
 select,
 textarea {
@@ -72,4 +79,8 @@ textarea {
   textarea {
     font-size: inherit;
   }
+}
+
+::placeholder {
+  color: #94a3b8;
 }

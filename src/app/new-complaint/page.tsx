@@ -14,6 +14,7 @@ import {
   TextInput,
 } from "@/components/layout/AppShell";
 import { AppSelect } from "@/components/ui/AppSelect";
+import { useComplaintsCache } from "@/components/complaints/ComplaintsCache";
 import {
   DynamicFields,
   areRequiredFieldsFilled,
@@ -41,6 +42,7 @@ function NewComplaintContent() {
   const router = useRouter();
   const { selectedCompany, userProfile, setLastSubmittedComplaint } =
     useAuth();
+  const { prepend } = useComplaintsCache();
   const { toast } = useToast();
 
   const [step, setStep] = useState<1 | 2>(1);
@@ -235,6 +237,7 @@ function NewComplaintContent() {
         origin,
         customFields,
       });
+      prepend(created);
 
       toast("Complaint submitted", "success");
       router.replace("/complaint-summary");
@@ -291,21 +294,21 @@ function NewComplaintContent() {
     >
       <div className="mb-4 flex items-center gap-2 overflow-x-auto pb-1">
         <span
-          className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
-            step === 1
-              ? "bg-[var(--brand-blue)] text-white"
-              : "bg-[var(--brand-blue-soft)] text-[var(--brand-blue)]"
-          }`}
-        >
-          01 Details
-        </span>
-        <span
-          className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
-            step === 2
-              ? "bg-[var(--brand-blue)] text-white"
-              : "bg-slate-100 text-slate-500"
-          }`}
-        >
+            className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
+              step === 1
+                ? "bg-[#0108B8] text-white"
+                : "bg-[#EFF4FF] text-[#0108B8]"
+            }`}
+          >
+            01 Details
+          </span>
+          <span
+            className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium ${
+              step === 2
+                ? "bg-[#0108B8] text-white"
+                : "bg-gray-100 text-gray-500"
+            }`}
+          >
           02 Template
         </span>
       </div>
@@ -371,7 +374,7 @@ function NewComplaintContent() {
               }))}
             />
             {step1.managerName && (
-              <p className="mt-1 text-xs text-slate-500">
+              <p className="mt-1 text-xs text-gray-500">
                 Manager: {step1.managerName}
               </p>
             )}

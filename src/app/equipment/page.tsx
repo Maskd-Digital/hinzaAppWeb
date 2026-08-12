@@ -87,15 +87,15 @@ function EquipmentHomeContent() {
             >
               <Card className="transition hover:shadow-md sm:hover:-translate-y-0.5">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--brand-blue-soft)] text-[var(--brand-blue)]">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#EFF4FF] text-[#2563EB]">
                     <Building2 className="h-4 w-4" />
                   </div>
                   <div className="min-w-0">
-                    <h2 className="truncate font-semibold text-slate-800">
+                    <h2 className="truncate font-semibold text-[#081636]">
                       {f.name}
                     </h2>
                     {(f.city || f.address) && (
-                      <p className="truncate text-xs text-slate-500">
+                      <p className="truncate text-xs text-gray-500">
                         {[f.address, f.city].filter(Boolean).join(", ")}
                       </p>
                     )}

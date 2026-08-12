@@ -129,7 +129,7 @@ function EquipmentFormContent() {
               <img
                 src={preview}
                 alt="Equipment preview"
-                className="mt-3 max-h-56 w-full rounded-xl border border-slate-200 object-contain"
+                className="mt-3 max-h-56 w-full rounded-xl border border-gray-200 object-contain"
               />
             )}
           </div>
